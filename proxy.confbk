@@ -1,0 +1,112 @@
+server {
+
+	# this configuration assumes that http request has the form of
+	# www.1haitao.com/http|https://www.thirdparty.com/xxx/yyy?para=v1
+	# now suppose following is a request from client side
+	# GET: /http|https://www.thirdparty.com/xxx/yyy?para=v1
+	# Host: www.1haitao.com
+	# then nginx get request_uri = /http|https://www.thirdparty.com/xxx/yyy?para=v1
+	# remove the leading '/' get url='http|https://www.thirdparty.com/xxx/yyy?para=v1'
+	# simply use that url as proxy_path parameter
+	# after nginx getting the response, do some string substitution work
+	# such as changing <img> <link> tags, inserting addition js code
+	# after this processing, all links in the page have the form
+	# 'http|https://www.thirdparty.com/xxx/yyy?para=v1'
+	# so again next reverse proxy can be done when a link is clicked
+
+	listen 80; 
+
+	client_header_buffer_size 128k;
+	large_client_header_buffers 4 128k;
+
+	server_name py.1haitao.com 103.36.132.70;
+
+	access_log /opt/nginx/logs/proxy_access.log ;
+
+	error_log /opt/nginx/logs/proxy_error.log ;
+
+	rewrite_log on;
+
+	set $domain "proxy.1haitao.com";
+	set $originurl "";	
+
+	location ~ (/http.*) {
+		#if ($request_uri !~* "(amazon|6pm|zappos|jomashop|backcountry|ashford|levi|ralphlauren|nordstrom|joesnewbalanceoutlet|carters|oshkosh|asos|esteelauder|clinique|1haitao|lookfantastic|gnc|unineed|shopspring|rebeccaminkoff|chemistwarehouse|vitacost|bloomingdales|katespade|swarovski)\.com") 
+		#{
+		#	 add_header  Content-Type 'text/html; charset=utf-8';
+		#          return 200 "<p>There's no such thing as a free lunch!!!你懂得</p>";
+		#  }
+		#
+		# used for proxy_pass
+		set $path "";
+		# used to store third party domain name
+		set $origin "";
+
+		# modified_uri = /http|https://www.thirdparty.com/xxx/yyy?para=v1
+		set $modified_uri $request_uri;
+
+		if ($modified_uri ~* "^/(.*?com)/?") {
+		   # origin = http|https://www.thirdparpy.com
+			set $origin $1; # get current request's domain name
+		}
+
+		if ($modified_uri ~* "^/(.*)")
+		{
+		    # path = http|https://www.thirdparty.com/xxx/yyy?para=v1
+			set $path $1; # get current request's path
+		}
+		
+		set $dummypath $path;
+
+		# TODO in soma cases nginx would enode path
+		if ($request_uri ~ '%') {
+		    set_unescape_uri $path;
+		}
+		if ( $path ~ ' ') {
+			set $path $dummypath;	
+		}
+
+		#matsukiyo.co.jp",
+		#amazon.co.jp",
+		#rakuten.co.jp",
+		# in case upstream has gzip turned on, so turn off it
+		proxy_set_header Accept-Encoding "";
+		proxy_set_header Referer  $origin;
+
+
+		#set $ooxx "explugin";
+		#if ( $http_user_agent ~* "(android|ios)" ) {
+			#set $ooxx "mobile-explugin";
+		#}
+		# processing response body
+		# href='/gp/xx/oo' ====>   href='/https://www.amazon.com/gp/xx/oo
+		subs_filter '(href|src|action)=(.)(/[a-z])'  '$1=$2/$origin$3' ir;
+		# 'https:// ==> '/https://
+		subs_filter '(["\'])(https?://)' '$1/$2' ir;
+		# add header and footer
+		sub_filter '<title>' '<input type="hidden" id="origin-url" value="$path" scriptddrre="a"><title>' ;
+	        #subs_filter '<head>' '<head><link rel="stylesheet" href="//1tcdn.1haitao.com/mobile-explugin/css/em-main.css?v=1479500136">' o;
+		sub_filter '</title>' '</title><script type="text/javascript" id="requirejs" data-main="//1tcdn.1haitao.com/??common/js/yht_host.js,explugin/js/em-loader.js?v=20160224" data-version="20160224" src="//1tcdn.1haitao.com/explugin/js/require.js?v=20160224"></script>';
+		#subs_filter '</html>' 'wocaoaaaaa</html>';
+
+		# add debugging message 
+		add_header X-debug-message "$request_uri $path $origin " always;
+		#add_before_body /footer.html;
+		#  keep-alive settings
+		#proxy_http_version 1.1;
+		#proxy_read_timeout 300;
+		#proxy_set_header Connection "";
+		proxy_pass $path;
+		proxy_redirect ~^/(.*)$ /$origin/$1;
+		proxy_redirect ~^(.*)$ /$1;
+        }   
+	location  = /footer.html {
+		return 200 '<input type="hidden" id="origin-url" value="$originurl" scriptddrre="a"> <script type="text/javascript" id="requirejs" data-main="//1tcdn.1haitao.com/??common/js/yht_host.js,explugin/js/em-loader.js?v=20160224" data-version="20160224" src="//1tcdn.1haitao.com/explugin/js/require.js?v=20160224">';
+
+	}
+	# when use variable in proxy_pass directive
+	# dns server must be set
+	resolver 8.8.8.8;
+}
+
+
