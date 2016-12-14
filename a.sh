@@ -1,4 +1,35 @@
-for file in 6pm amazon amazonjp ashford asos backcountry carters chemistwarehouse clinique esteelauder gnc joesnewbalanceoutlet jomashop katespade levi lookfantastic m6pm masos matsukiyo mbloomingdales mcliniqu mesteelauder mlookfantastic mzappos nginx.root oshkosh rakuten rebeccaminkoff selfridges shopspring swarovski unineed victoriassecret vitacost zappos 
-do
-	sed -i $file.conf 's/proxy_set_header.*/&\nproxy_cookie_domain .'$file.com' p-i'$file.showmao.com;'
-done
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .amazonjp.com p-amazonjp.showmao.com;/' amazonjp.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .amazon.com p-amazon.showmao.com;/' amazon.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .6pm.com p-6pm.showmao.com;/' 6pm.conf
+
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .ashford.com p-ashford.showmao.com;/' ashford.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .asos.com p-asos.showmao.com;/' asos.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .backcountry.com p-backcountry.showmao.com;/' backcountry.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .carters.com p-carters.showmao.com;/' carters.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .chemistwarehouse.com p-chemistwarehouse.showmao.com;/' chemistwarehouse.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .clinique.com p-clinique.showmao.com;/' clinique.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .esteelauder.com p-esteelauder.showmao.com;/' esteelauder.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .gnc.com p-gnc.showmao.com;/' gnc.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .joesnewbalanceoutlet.com p-joesnewbalanceoutlet.showmao.com;/' joesnewbalanceoutlet.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .jomashop.com p-jomashop.showmao.com;/' jomashop.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .katespade.com p-katespade.showmao.com;/' katespade.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .levi.com p-levi.showmao.com;/' levi.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .lookfantastic.com p-lookfantastic.showmao.com;/' lookfantastic.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .m6pm.com p-m6pm.showmao.com;/' m6pm.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .masos.com p-masos.showmao.com;/' masos.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .matsukiyo.com p-matsukiyo.showmao.com;/' matsukiyo.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .mbloomingdales.com p-mbloomingdales.showmao.com;/' mbloomingdales.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .mcliniqu.com p-mcliniqu.showmao.com;/' mcliniqu.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .mesteelauder.com p-mesteelauder.showmao.com;/' mesteelauder.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .mlookfantastic.com p-mlookfantastic.showmao.com;/' mlookfantastic.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .mzappos.com p-mzappos.showmao.com;/' mzappos.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .oshkosh.com p-oshkosh.showmao.com;/' oshkosh.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .rakuten.com p-rakuten.showmao.com;/' rakuten.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .rebeccaminkoff.com p-rebeccaminkoff.showmao.com;/' rebeccaminkoff.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .selfridges.com p-selfridges.showmao.com;/' selfridges.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .shopspring.com p-shopspring.showmao.com;/' shopspring.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .swarovski.com p-swarovski.showmao.com;/' swarovski.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .unineed.com p-unineed.showmao.com;/' unineed.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .victoriassecret.com p-victoriassecret.showmao.com;/' victoriassecret.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .vitacost.com p-vitacost.showmao.com;/' vitacost.conf
+sed -i  's/proxy_set_header.*/&\nproxy_cookie_domain .zappos.com p-zappos.showmao.com;/' zappos.conf
