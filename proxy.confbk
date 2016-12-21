@@ -21,9 +21,9 @@ server {
 
 	server_name py.1haitao.com 103.36.132.70;
 
-	access_log /opt/nginx/logs/proxy_access.log ;
+	access_log /var/log/nginx/proxy_access.log ;
 
-	error_log /opt/nginx/logs/proxy_error.log ;
+	error_log /var/log/nginx/proxy_error.log ;
 
 	rewrite_log on;
 
